@@ -3,14 +3,15 @@ export class StudentsView {
     this.parent = parent;
     this.onStudentDelete = onStudentDelete;
 
-    this.parent.addEventListener('click', this.#onDeleteButtonClick.bind(this));
+    this.parent.addEventListener('click', this.#onDeleteButtonClick);
   }
 
   destroy() {
     this.parent.replaceChildren();
+    this.parent.removeEventListener('click', this.#onDeleteButtonClick);
   }
 
-  #onDeleteButtonClick(event) {
+  #onDeleteButtonClick = (event) => {
     const deleteButton = event.target.closest('.student__delete-button');
     if (!deleteButton) {
       return;
@@ -22,7 +23,7 @@ export class StudentsView {
     }
 
     this.onStudentDelete(studentId);
-  }
+  };
 
   setStudents(students) {
     this.students = students;

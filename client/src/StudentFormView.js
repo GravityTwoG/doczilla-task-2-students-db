@@ -3,14 +3,15 @@ export class StudentFormView {
     this.parent = parent;
     this.onStudentAdd = onStudentAdd;
 
-    this.parent.addEventListener('submit', this.#onSubmit.bind(this));
+    this.parent.addEventListener('submit', this.#onSubmit);
   }
 
   destroy() {
     this.parent.replaceChildren();
+    this.parent.removeEventListener('submit', this.#onSubmit);
   }
 
-  async #onSubmit(event) {
+  #onSubmit = async (event) => {
     try {
       event.preventDefault();
 
@@ -37,5 +38,5 @@ export class StudentFormView {
     } finally {
       this.isSubmitting = false;
     }
-  }
+  };
 }

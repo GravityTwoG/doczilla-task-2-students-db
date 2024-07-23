@@ -3,11 +3,16 @@ import { Observable } from './observable';
 import { addStudent, getStudents, deleteStudent } from './api';
 
 export class StudentsPageModel {
+  #students;
+  #totalCount;
+  #pageSize;
+  #pageNumber;
+
   constructor() {
-    this.students = new Observable([]);
-    this.totalCount = new Observable(0);
-    this.pageSize = new Observable(10);
-    this.pageNumber = new Observable(1);
+    this.#students = new Observable([]);
+    this.#totalCount = new Observable(0);
+    this.#pageSize = new Observable(10);
+    this.#pageNumber = new Observable(1);
   }
 
   async init() {
@@ -16,13 +21,13 @@ export class StudentsPageModel {
 
   async loadStudents(pageNumber) {
     const students = await getStudents({
-      pageSize: this.pageSize.get(),
+      pageSize: this.#pageSize.get(),
       pageNumber: pageNumber,
     });
 
-    this.pageNumber.set(pageNumber);
-    this.students.set(students.items);
-    this.totalCount.set(students.totalCount);
+    this.#pageNumber.set(pageNumber);
+    this.#students.set(students.items);
+    this.#totalCount.set(students.totalCount);
   }
 
   async addStudent(student) {
@@ -32,22 +37,22 @@ export class StudentsPageModel {
 
   async deleteStudent(id) {
     await deleteStudent(id);
-    await this.loadStudents(this.pageNumber.get());
+    await this.loadStudents(this.#pageNumber.get());
   }
 
   getStudents() {
-    return this.students;
+    return this.#students;
   }
 
   getTotalCount() {
-    return this.totalCount;
+    return this.#totalCount;
   }
 
   getPageSize() {
-    return this.pageSize;
+    return this.#pageSize;
   }
 
   getPageNumber() {
-    return this.pageNumber;
+    return this.#pageNumber;
   }
 }
