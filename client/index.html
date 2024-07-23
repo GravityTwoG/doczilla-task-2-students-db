@@ -7,7 +7,44 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="page">
+      <div class="container paper">
+        <form id="studentForm" class="student-form">
+          <div class="student-form__field">
+            <label for="name">First Name</label>
+            <input type="text" id="name" name="name" />
+          </div>
+          <div class="student-form__field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" />
+          </div>
+          <div class="student-form__field">
+            <label for="patronymic">Patronymic</label>
+            <input type="text" id="patronymic" name="patronymic" />
+          </div>
+          <div class="student-form__field">
+            <label for="birthDate">Birth Date</label>
+            <input type="date" id="birthDate" name="birthDate" />
+          </div>
+          <div class="student-form__field">
+            <label for="group">Group</label>
+            <input type="text" id="group" name="group" />
+          </div>
+
+          <button class="student-form__button">Add Student</button>
+        </form>
+      </div>
+
+      <div class="container">
+        <div>
+          <h1>Students</h1>
+          <ul class="students-list" id="students-list"></ul>
+        </div>
+
+        <ul class="paginator" id="paginator"></ul>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
