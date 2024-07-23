@@ -1,5 +1,6 @@
 package org.gravitytwog.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.gravitytwog.dto.AddStudentDTO;
 import org.gravitytwog.dto.GetPageDTO;
 import org.gravitytwog.dto.PageDTO;
@@ -21,6 +22,7 @@ public class StudentsController {
         this.studentsService = studentsService;
     }
 
+    @Operation(summary = "Add new student")
     @PostMapping
     public ResponseEntity<StudentDTO> addStudent(@RequestBody AddStudentDTO dto) {
         var student = this.studentsService.addStudent(dto);
@@ -28,11 +30,12 @@ public class StudentsController {
         return ResponseEntity.status(HttpStatus.OK).body(student.toDTO());
     }
 
+    @Operation(summary = "Get students")
     @GetMapping
     public ResponseEntity<PageDTO<StudentDTO>> getStudents(GetPageDTO dto) {
         var students = this.studentsService.getStudents(dto);
 
-        var studentsDTO = new PageDTO<StudentDTO>(
+        var studentsDTO = new PageDTO<>(
             students.items.stream().map(Student::toDTO).toList(),
             students.totalCount
         );
@@ -40,6 +43,7 @@ public class StudentsController {
         return ResponseEntity.ok(studentsDTO);
     }
 
+    @Operation(summary = "Delete student")
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteStudents(
             @PathVariable(name = "id") int studentId
