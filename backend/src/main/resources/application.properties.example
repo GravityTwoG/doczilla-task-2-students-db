@@ -3,3 +3,5 @@ spring.datasource.username= user
 spring.datasource.password= password
 
 springdoc.api-docs.path=/api-docs
+
+org.gravitytwog.cors.allowedOrigins= http://localhost:5173
