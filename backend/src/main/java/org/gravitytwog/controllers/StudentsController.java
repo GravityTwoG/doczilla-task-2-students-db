@@ -1,6 +1,7 @@
 package org.gravitytwog.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.gravitytwog.dto.AddStudentDTO;
 import org.gravitytwog.dto.GetPageDTO;
 import org.gravitytwog.dto.PageDTO;
@@ -24,7 +25,7 @@ public class StudentsController {
 
     @Operation(summary = "Add new student")
     @PostMapping
-    public ResponseEntity<StudentDTO> addStudent(@RequestBody AddStudentDTO dto) {
+    public ResponseEntity<StudentDTO> addStudent(@Valid @RequestBody AddStudentDTO dto) {
         var student = this.studentsService.addStudent(dto);
 
         return ResponseEntity.status(HttpStatus.OK).body(student.toDTO());
@@ -32,7 +33,7 @@ public class StudentsController {
 
     @Operation(summary = "Get students")
     @GetMapping
-    public ResponseEntity<PageDTO<StudentDTO>> getStudents(GetPageDTO dto) {
+    public ResponseEntity<PageDTO<StudentDTO>> getStudents(@Valid GetPageDTO dto) {
         var students = this.studentsService.getStudents(dto);
 
         var studentsDTO = new PageDTO<>(
