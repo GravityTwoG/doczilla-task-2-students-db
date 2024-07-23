@@ -1,22 +1,27 @@
 package org.gravitytwog;
 
-import org.gravitytwog.dto.GetPageDTO;
-import org.gravitytwog.entities.Student;
-import org.gravitytwog.repositories.StudentsRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.Objects;
 
-public class Main {
+@SpringBootApplication
+public class Main implements CommandLineRunner {
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
     public static void main(String[] args) {
-        try {
-            Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://127.0.0.1:5432/students-db",
-                "user",
-                "password"
-            );
+        SpringApplication.run(Main.class, args);
+    }
+
+    @Override
+    public void run(String... strings) {
+        try (var conn = Objects.requireNonNull(
+                this.jdbcTemplate.getDataSource()).getConnection()) {
 
             conn.prepareStatement("""
                 CREATE TABLE IF NOT EXISTS students(
@@ -29,24 +34,6 @@ public class Main {
                 );
             """).execute();
 
-            var repo = new StudentsRepositoryImpl(conn);
-
-            var student = new Student(
-                "A",
-                "B",
-                "C",
-                LocalDate.now(),
-                "A-01"
-            );
-
-            repo.addStudent(
-                student
-            );
-
-            var students = repo.getStudents(new GetPageDTO(1, 2));
-
-            System.out.println("Total count: " + students.totalCount);
-            students.items.forEach(s -> System.out.println(s.toDTO().id + " " + s.toDTO().name));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

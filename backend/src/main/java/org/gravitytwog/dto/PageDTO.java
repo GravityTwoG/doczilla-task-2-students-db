@@ -1,13 +1,13 @@
 package org.gravitytwog.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PageDTO<T> {
-    public ArrayList<T> items;
+    public List<T> items;
 
     public int totalCount;
 
-    public PageDTO(ArrayList<T> items, int totalCount) {
+    public PageDTO(List<T> items, int totalCount) {
         this.items = items;
         this.totalCount = totalCount;
     }

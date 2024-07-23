@@ -4,27 +4,32 @@ import org.gravitytwog.dto.GetPageDTO;
 import org.gravitytwog.dto.PageDTO;
 import org.gravitytwog.dto.StudentDTO;
 import org.gravitytwog.entities.Student;
+import org.gravitytwog.exceptions.EntityNotFoundException;
 import org.gravitytwog.interfaces.StudentsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
+@Repository
 public class StudentsRepositoryImpl implements StudentsRepository {
-    private final Connection conn;
-
-    public StudentsRepositoryImpl(Connection conn) {
-        this.conn = conn;
-    }
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public void addStudent(Student student) {
-        try {
+        try (var conn = Objects.requireNonNull(
+                this.jdbcTemplate.getDataSource()).getConnection()) {
+
             var dto = student.toDTO();
 
-            PreparedStatement statement = this.conn.prepareStatement("""
+            PreparedStatement statement = conn.prepareStatement("""
                 INSERT INTO students(name, last_name, patronymic, birth_date, "group")
                 VALUES(?, ?, ?, ?, ?) RETURNING id;
             """);
@@ -49,8 +54,10 @@ public class StudentsRepositoryImpl implements StudentsRepository {
 
     @Override
     public PageDTO<Student> getStudents(GetPageDTO dto) {
-        try {
-            PreparedStatement countStatement = this.conn.prepareStatement("""
+        try (var conn = Objects.requireNonNull(
+                this.jdbcTemplate.getDataSource()).getConnection()) {
+
+            PreparedStatement countStatement = conn.prepareStatement("""
                 SELECT COUNT(*) FROM students;
             """);
 
@@ -63,7 +70,7 @@ public class StudentsRepositoryImpl implements StudentsRepository {
             int totalCount = countResult.getInt(1);
             var students = new ArrayList<Student>();
 
-            PreparedStatement statement = this.conn.prepareStatement("""
+            PreparedStatement statement = conn.prepareStatement("""
                 SELECT id, name, last_name, patronymic, birth_date, "group"
                 FROM students LIMIT ? OFFSET ?;
             """);
@@ -96,9 +103,11 @@ public class StudentsRepositoryImpl implements StudentsRepository {
     }
 
     @Override
-    public void deleteStudent(int studentId) {
-        try {
-            PreparedStatement statement = this.conn.prepareStatement("""
+    public void deleteStudent(int studentId) throws EntityNotFoundException {
+        try (var conn = Objects.requireNonNull(
+                this.jdbcTemplate.getDataSource()).getConnection()) {
+
+            PreparedStatement statement = conn.prepareStatement("""
                 DELETE FROM students WHERE id = ?;
             """);
 
@@ -106,9 +115,9 @@ public class StudentsRepositoryImpl implements StudentsRepository {
 
             int deleted = statement.executeUpdate();
             if (deleted <= 0) {
-                throw new Exception("Unable to delete student");
+                throw new EntityNotFoundException("Student not found");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
