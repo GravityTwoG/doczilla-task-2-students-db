@@ -3,6 +3,8 @@ export class PaginatorView {
     this.parent = parent;
     this.onPageChange = onPageChange;
     this.scope = 3;
+    this.pagesCount = 1;
+    this.pageNumber = 1;
 
     this.parent.addEventListener('click', this.#onPageClick.bind(this));
   }
@@ -11,7 +13,17 @@ export class PaginatorView {
     this.parent.replaceChildren();
   }
 
-  setPages(pagesCount, currentPageNumber) {
+  setPagesCount(pagesCount) {
+    this.pagesCount = pagesCount;
+    this.#drawPages(this.pagesCount, this.pageNumber);
+  }
+
+  setPageNumber(pageNumber) {
+    this.pageNumber = pageNumber;
+    this.#drawPages(this.pagesCount, this.pageNumber);
+  }
+
+  #drawPages(pagesCount, currentPageNumber) {
     const pages = [];
 
     let min = Math.max(1, currentPageNumber - this.scope);
