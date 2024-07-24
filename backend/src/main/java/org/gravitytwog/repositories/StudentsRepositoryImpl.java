@@ -72,7 +72,7 @@ public class StudentsRepositoryImpl implements StudentsRepository {
 
             PreparedStatement statement = conn.prepareStatement("""
                 SELECT id, name, last_name, patronymic, birth_date, "group"
-                FROM students LIMIT ? OFFSET ?;
+                FROM students ORDER BY id DESC LIMIT ? OFFSET ?;
             """);
 
             statement.setInt(1, dto.pageSize);
