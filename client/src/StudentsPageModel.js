@@ -7,12 +7,14 @@ export class StudentsPageModel {
   #totalCount;
   #pageSize;
   #pageNumber;
+  #error;
 
   constructor() {
     this.#students = new Observable([]);
     this.#totalCount = new Observable(0);
     this.#pageSize = new Observable(10);
     this.#pageNumber = new Observable(1);
+    this.#error = new Observable('');
   }
 
   async init() {
@@ -20,14 +22,22 @@ export class StudentsPageModel {
   }
 
   async loadStudents(pageNumber) {
-    const students = await getStudents({
-      pageSize: this.#pageSize.get(),
-      pageNumber: pageNumber,
-    });
+    try {
+      this.#error.set('');
 
-    this.#pageNumber.set(pageNumber);
-    this.#students.set(students.items);
-    this.#totalCount.set(students.totalCount);
+      const students = await getStudents({
+        pageSize: this.#pageSize.get(),
+        pageNumber: pageNumber,
+      });
+
+      this.#pageNumber.set(pageNumber);
+      this.#students.set(students.items);
+      this.#totalCount.set(students.totalCount);
+    } catch (error) {
+      this.#error.set(
+        error.message || 'An error occurred while loading students'
+      );
+    }
   }
 
   async addStudent(student) {
@@ -54,5 +64,9 @@ export class StudentsPageModel {
 
   getPageNumber() {
     return this.#pageNumber;
+  }
+
+  getError() {
+    return this.#error;
   }
 }

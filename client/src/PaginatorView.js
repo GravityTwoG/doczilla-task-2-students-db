@@ -2,7 +2,7 @@ export class PaginatorView {
   constructor(parent, onPageChange) {
     this.parent = parent;
     this.onPageChange = onPageChange;
-    this.scope = 3;
+    this.scope = 2;
     this.pagesCount = 1;
     this.pageNumber = 1;
 

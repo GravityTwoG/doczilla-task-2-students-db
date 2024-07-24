@@ -34,7 +34,7 @@ export class StudentFormView {
       this.parent.reset();
     } catch (error) {
       console.error(error);
-      alert('An error occurred while adding the student');
+      alert('An error occurred while adding the student: ' + error.message);
     } finally {
       this.isSubmitting = false;
     }

@@ -45,5 +45,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     paginatorView.setPageNumber(pageNumber);
   });
 
+  const errorElement = document.getElementById('studentsListError');
+  studentsPageModel.getError().subscribe((error) => {
+    if (error) {
+      const errorTextElement = document.createElement('p');
+      errorTextElement.classList.add('paper');
+      errorTextElement.classList.add('error');
+      errorTextElement.textContent = error;
+      errorElement.appendChild(errorTextElement);
+    } else {
+      errorElement.replaceChildren();
+    }
+  });
+
   await studentsPageModel.init();
 });

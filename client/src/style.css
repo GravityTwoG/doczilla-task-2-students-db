@@ -123,6 +123,10 @@ button:focus-visible {
   border-color: #ccc;
 }
 
+.error {
+  color: rgb(213, 36, 36);
+}
+
 .students-list {
   display: flex;
   flex-direction: column;
@@ -139,12 +143,19 @@ button:focus-visible {
   gap: 1rem;
 }
 
-.student__name,
-.student__last-name,
-.student__patronymic,
-.student__birth-date,
-.student__group {
+.student__column {
   text-align: left;
+}
+
+.student__column__label {
+  font-weight: bold;
+  font-size: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: #777;
+}
+
+.student__column__value {
+  font-weight: normal;
 }
 
 .student__delete-button {
@@ -152,6 +163,7 @@ button:focus-visible {
   place-self: end;
   order: 1;
   grid-column-end: -1;
+  padding: 0.25rem 0.5rem;
 }
 
 .paginator {
