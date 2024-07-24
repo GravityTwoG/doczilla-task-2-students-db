@@ -17,6 +17,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --color-accent: #646cff;
+  --color-danger: rgb(213, 36, 36);
+  --color-paper: #fff;
+  --color-bg: #ecebeb;
 }
 
 body {
@@ -48,9 +53,41 @@ body {
   padding: 1rem;
   text-align: center;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-paper);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+h1 {
+  font-size: 2.4rem;
+  line-height: 1.2;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-accent);
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+button:hover {
+  background-color: #535bf2;
+  border-color: #ccc;
+}
+
+button:focus,
+button:focus-visible {
+  border-color: #ccc;
+}
+
+/* Student form */
 
 .student-form {
   margin: auto;
@@ -81,7 +118,7 @@ body {
 
 .student-form__field input:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: var(--color-accent);
 }
 
 .student-form__button {
@@ -93,39 +130,13 @@ body {
   grid-column-end: -1;
 }
 
-h1 {
-  font-size: 2.4rem;
-  line-height: 1.2;
-  text-align: left;
-  margin-bottom: 1rem;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #646cff;
-  color: #fff;
-  cursor: pointer;
-  transition: border-color 0.25s, background-color 0.25s;
-}
-
-button:hover {
-  background-color: #535bf2;
-  border-color: #ccc;
-}
-
-button:focus,
-button:focus-visible {
-  border-color: #ccc;
-}
+/* Error */
 
 .error {
-  color: rgb(213, 36, 36);
+  color: var(--color-danger);
 }
+
+/* Students list */
 
 .students-list {
   display: flex;
@@ -159,12 +170,14 @@ button:focus-visible {
 }
 
 .student__delete-button {
-  background-color: rgb(213, 36, 36);
+  background-color: var(--color-danger);
   place-self: end;
   order: 1;
   grid-column-end: -1;
   padding: 0.25rem 0.5rem;
 }
+
+/* Paginator */
 
 .paginator {
   margin-top: 1rem;
@@ -182,7 +195,7 @@ button:focus-visible {
   border-radius: 4px;
   min-width: 2rem;
   text-align: center;
-  background-color: #fff;
+  background-color: var(--color-paper);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   list-style: none;
   cursor: pointer;
@@ -190,6 +203,6 @@ button:focus-visible {
 }
 
 .paginator__page.is-current {
-  background-color: #646cff;
+  background-color: var(--color-accent);
   color: #fff;
 }
